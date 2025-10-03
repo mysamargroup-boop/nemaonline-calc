@@ -14,8 +14,8 @@ const bmiCategories = [
 const BMICalculator: React.FC = () => {
   type UnitSystem = 'metric' | 'imperial';
   const defaultState = {
-      weight: '',
-      height: '',
+      weight: '70',
+      height: '175',
       unitSystem: 'metric' as UnitSystem
   };
 

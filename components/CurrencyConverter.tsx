@@ -17,7 +17,7 @@ const currencyOptions = Object.entries(CURRENCY_RATES).map(([code, { name }]) =>
 
 const CurrencyConverter: React.FC = () => {
     const defaultState = {
-        amount: '',
+        amount: '100',
         fromCurrency: 'USD',
         toCurrency: 'INR',
     };

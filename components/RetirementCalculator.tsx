@@ -7,12 +7,12 @@ import { motion } from 'framer-motion';
 
 const RetirementCalculator: React.FC = () => {
     const defaultState = {
-        currentAge: '',
-        retirementAge: '',
-        currentSavings: '',
-        monthlyContribution: '',
-        returnRate: '',
-        inflationRate: '',
+        currentAge: '30',
+        retirementAge: '60',
+        currentSavings: '500000',
+        monthlyContribution: '15000',
+        returnRate: '12',
+        inflationRate: '6',
     };
 
     const [currentAge, setCurrentAge] = useState<string>(defaultState.currentAge);

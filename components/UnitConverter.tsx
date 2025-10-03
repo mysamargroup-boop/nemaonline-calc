@@ -50,7 +50,7 @@ const UnitConverter: React.FC = () => {
     const [conversionType, setConversionType] = useState<ConversionType>('length');
     const [fromUnit, setFromUnit] = useState<string>('m');
     const [toUnit, setToUnit] = useState<string>('ft');
-    const [amount, setAmount] = useState<string>('');
+    const [amount, setAmount] = useState<string>('1');
     const [result, setResult] = useState<string | null>(null);
 
     const unitOptions = useMemo(() => {
@@ -93,7 +93,7 @@ const UnitConverter: React.FC = () => {
 
     const resetCalculator = () => {
         setConversionType('length');
-        setAmount('');
+        setAmount('1');
         setFromUnit('m');
         setToUnit('ft');
     };

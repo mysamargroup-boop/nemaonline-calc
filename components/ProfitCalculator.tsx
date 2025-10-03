@@ -6,10 +6,10 @@ import { motion } from 'framer-motion';
 
 const ProfitCalculator: React.FC = () => {
   const defaultState = {
-    costPrice: '',
-    sellingPrice: '',
-    discount: '',
-    gst: '',
+    costPrice: '100',
+    sellingPrice: '150',
+    discount: '10',
+    gst: '18',
   };
 
   const [costPrice, setCostPrice] = useState<string>(defaultState.costPrice);

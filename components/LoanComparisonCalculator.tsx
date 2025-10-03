@@ -17,10 +17,10 @@ interface LoanResult {
 }
 
 const LoanComparisonCalculator: React.FC = () => {
-  const initialLoanState: LoanDetails = { principal: '', rate: '', tenure: '' };
+  const initialLoanState: LoanDetails = { principal: '2500000', rate: '9', tenure: '20' };
   
   const [loan1, setLoan1] = useState<LoanDetails>(initialLoanState);
-  const [loan2, setLoan2] = useState<LoanDetails>(initialLoanState);
+  const [loan2, setLoan2] = useState<LoanDetails>({ principal: '2500000', rate: '8.5', tenure: '25' });
 
   const [result1, setResult1] = useState<LoanResult | null>(null);
   const [result2, setResult2] = useState<LoanResult | null>(null);
@@ -54,7 +54,7 @@ const LoanComparisonCalculator: React.FC = () => {
 
   const resetCalculator = () => {
       setLoan1(initialLoanState);
-      setLoan2(initialLoanState);
+      setLoan2({ principal: '2500000', rate: '8.5', tenure: '25' });
   };
   
   const formatCurrency = (value: number) => {
