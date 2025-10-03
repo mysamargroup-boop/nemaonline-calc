@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO Meta Tags -->
+    <title>Nemaonline Calc</title>
+    <meta name="description" content="Nemaonline Calc: A free suite of powerful online calculators. Easily calculate EMI, compare loans, plan for retirement, project investment returns, convert currency, and more." />
+    <meta name="keywords" content="calculator, emi calculator, loan comparison, retirement planner, investment calculator, profit calculator, bmi calculator, age calculator, currency converter, free tools, financial calculator" />
+    <meta name="author" content="Samar" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://calc.nemaonline.in/" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://calc.nemaonline.in/" />
+    <meta property="og:title" content="Nemaonline Calc - All-In-One Calculator Suite" />
+    <meta property="og:description" content="Free online calculators for EMI, loan comparison, retirement planning, investment returns, currency conversion, and more." />
+    <meta property="og:image" content="https://calc.nemaonline.in/og-image.png" /> <!-- IMPORTANT: Replace with a link to a preview image -->
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://calc.nemaonline.in/" />
+    <meta property="twitter:title" content="Nemaonline Calc - All-In-One Calculator Suite" />
+    <meta property="twitter:description" content="Free online calculators for EMI, loan comparison, retirement planning, investment returns, currency conversion, and more." />
+    <meta property="twitter:image" content="https://calc.nemaonline.in/og-image.png" /> <!-- IMPORTANT: Replace with a link to a preview image -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class', // Enable dark mode
+        theme: {
+          extend: {
+            colors: {
+              'primary': '#1e40af',
+              'secondary': '#f0f9ff',
+            },
+          }
+        }
+      }
+    </script>
+    <style>
+      /* Custom scrollbar for Webkit (Chrome, Safari, etc.) and Firefox */
+      .custom-scrollbar {
+        scrollbar-width: thin;
+        scrollbar-color: transparent transparent; /* thumb track */
+      }
+      .custom-scrollbar:hover {
+        scrollbar-color: rgba(107, 114, 128, 0.5) transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        border-radius: 10px;
+      }
+      .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+        background-color: rgba(107, 114, 128, 0.5); /* gray-500 with 50% opacity */
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(156, 163, 175, 0.7); /* gray-400 with 70% opacity */
+      }
+
+      /* Utility to hide scrollbar */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+      }
+    </style>
+    <script>
+      // Prevents FOUC (Flash of Unstyled Content) for dark mode
+      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.22"
+  }
+}
+</script>
+</head>
+  <body class="bg-slate-50 dark:bg-gradient-to-br dark:from-zinc-900 dark:to-black transition-colors duration-300">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

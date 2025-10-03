@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- 
+    The primary URL for the single-page application.
+    For SPAs with routing, add a <url> entry for each distinct page/route.
+  -->
+  <url>
+    <loc>https://calc.nemaonline.in/</loc>
+    <lastmod>2024-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
