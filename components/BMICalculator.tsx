@@ -4,11 +4,18 @@ import Input from './Input';
 import Button from './Button';
 import { motion } from 'framer-motion';
 
+const bmiCategories = [
+  { range: '< 18.5', category: 'Underweight' },
+  { range: '18.5 - 24.9', category: 'Normal weight' },
+  { range: '25.0 - 29.9', category: 'Overweight' },
+  { range: '≥ 30.0', category: 'Obesity' }
+];
+
 const BMICalculator: React.FC = () => {
   type UnitSystem = 'metric' | 'imperial';
   const defaultState = {
-      weight: '70',
-      height: '175',
+      weight: '',
+      height: '',
       unitSystem: 'metric' as UnitSystem
   };
 
@@ -19,12 +26,14 @@ const BMICalculator: React.FC = () => {
     bmi: number;
     category: string;
     color: string;
+    idealWeightRange: { lower: number, upper: number };
+    weightToChange: { action: 'gain' | 'lose' | 'maintain', amount: number };
   } | null>(null);
 
   const getBMICategory = (bmi: number): { category: string; color: string } => {
     if (bmi < 18.5) return { category: 'Underweight', color: 'text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800' };
-    if (bmi >= 18.5 && bmi < 24.9) return { category: 'Normal weight', color: 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/50' };
-    if (bmi >= 25 && bmi < 29.9) return { category: 'Overweight', color: 'text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/50' };
+    if (bmi >= 18.5 && bmi < 25) return { category: 'Normal weight', color: 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/50' };
+    if (bmi >= 25 && bmi < 30) return { category: 'Overweight', color: 'text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/50' };
     return { category: 'Obesity', color: 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/50' };
   };
 
@@ -33,14 +42,34 @@ const BMICalculator: React.FC = () => {
     const h = parseFloat(height);
 
     if (w > 0 && h > 0) {
-      let bmi;
+      let bmi, idealWeightRange, weightToChange;
+      const heightInMeters = h / 100;
+      const heightInInches = h;
+
       if (unitSystem === 'metric') {
-          bmi = w / ((h / 100) * (h / 100)); // weight in kg, height in cm
+          bmi = w / (heightInMeters * heightInMeters);
+          idealWeightRange = {
+              lower: 18.5 * (heightInMeters * heightInMeters),
+              upper: 24.9 * (heightInMeters * heightInMeters)
+          };
       } else {
-          bmi = (w / (h * h)) * 703; // weight in lbs, height in inches
+          bmi = (w / (heightInInches * heightInInches)) * 703;
+          idealWeightRange = {
+              lower: (18.5 / 703) * (heightInInches * heightInInches),
+              upper: (24.9 / 703) * (heightInInches * heightInInches)
+          };
       }
+      
+      if (bmi < 18.5) {
+          weightToChange = { action: 'gain', amount: idealWeightRange.lower - w };
+      } else if (bmi > 24.9) {
+          weightToChange = { action: 'lose', amount: w - idealWeightRange.upper };
+      } else {
+          weightToChange = { action: 'maintain', amount: 0 };
+      }
+
       const { category, color } = getBMICategory(bmi);
-      setResult({ bmi, category, color });
+      setResult({ bmi, category, color, idealWeightRange, weightToChange });
     } else {
       setResult(null);
     }
@@ -116,6 +145,35 @@ const BMICalculator: React.FC = () => {
             {result.category}
           </p>
           <BMIGauge bmi={result.bmi} />
+
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+            <div className="p-4 bg-slate-50 dark:bg-zinc-900 rounded-lg">
+              <p className="text-sm text-slate-500 dark:text-slate-400">Ideal Weight Range</p>
+              <p className="text-lg font-semibold text-slate-800 dark:text-slate-200">
+                {result.idealWeightRange.lower.toFixed(1)} - {result.idealWeightRange.upper.toFixed(1)} {unitSystem === 'metric' ? 'kg' : 'lbs'}
+              </p>
+            </div>
+            <div className={`p-4 rounded-lg ${result.weightToChange.action === 'maintain' ? 'bg-slate-50 dark:bg-zinc-900' : 'bg-blue-50 dark:bg-blue-900/50'}`}>
+               <p className={`text-sm ${result.weightToChange.action === 'maintain' ? 'text-slate-500 dark:text-slate-400' : 'text-blue-600 dark:text-blue-400'}`}>
+                {result.weightToChange.action === 'maintain' ? 'You are in a healthy range' : `You should ${result.weightToChange.action}:`}
+              </p>
+              <p className={`text-lg font-semibold ${result.weightToChange.action === 'maintain' ? 'text-slate-800 dark:text-slate-200' : 'text-blue-800 dark:text-blue-300'}`}>
+                {result.weightToChange.action !== 'maintain' ? `${result.weightToChange.amount.toFixed(1)} ${unitSystem === 'metric' ? 'kg' : 'lbs'}` : 'Keep it up!'}
+              </p>
+            </div>
+          </div>
+          
+          <div className="mt-8">
+            <h3 className="text-lg font-semibold text-center mb-4 text-slate-700 dark:text-slate-300">BMI Reference Chart</h3>
+            <div className="space-y-2 max-w-md mx-auto">
+              {bmiCategories.map((cat) => (
+                <div key={cat.category} className={`flex justify-between items-center p-3 rounded-md transition-all duration-300 ${result.category === cat.category ? 'bg-white dark:bg-zinc-700 ring-2 ring-blue-500 dark:ring-blue-400' : 'bg-slate-50 dark:bg-zinc-900/80'}`}>
+                  <span className="font-medium text-slate-700 dark:text-slate-300">{cat.category}</span>
+                  <span className="text-slate-500 dark:text-slate-400 font-mono">{cat.range}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </motion.div>
       )}
     </Card>

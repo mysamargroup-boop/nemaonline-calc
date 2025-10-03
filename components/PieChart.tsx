@@ -7,9 +7,10 @@ interface PieChartProps {
     value: number;
     color: string;
   }[];
+  centerText?: React.ReactNode;
 }
 
-const PieChart: React.FC<PieChartProps> = ({ data }) => {
+const PieChart: React.FC<PieChartProps> = ({ data, centerText }) => {
   const total = data.reduce((sum, item) => sum + item.value, 0);
   let accumulated = 0;
 
@@ -48,6 +49,14 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
                 );
                 })}
             </svg>
+             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-[65%] h-[65%] bg-white dark:bg-[#0c0a09] rounded-full"></div>
+            </div>
+            {centerText && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center leading-tight">
+                    {centerText}
+                </div>
+            )}
         </div>
         <div className="flex flex-col gap-2">
         {data.map((item) => (

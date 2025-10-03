@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 const AgeCalculator: React.FC = () => {
   const defaultState = {
-    birthDate: '2000-01-01',
+    birthDate: '',
   };
 
   const [birthDate, setBirthDate] = useState<string>(defaultState.birthDate);

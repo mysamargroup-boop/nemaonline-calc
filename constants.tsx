@@ -34,46 +34,75 @@ const PiggyBankIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 21h4"></path><path d="M12 17v4"></path><path d="M14 7h-1.33a4 4 0 0 0-3.77 2.4"></path><path d="M18.83 8.23A4 4 0 0 1 15 12H9a4 4 0 0 1 0-8h1a3 3 0 0 1 3 3v1"></path><path d="M8.5 9.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"></path></svg>
 );
 
+const RulerIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L3 8.4a2.4 2.4 0 0 1 0-3.4l2.6-2.6a2.4 2.4 0 0 1 3.4 0L18 11.6"></path><path d="m21.3 21.3-1.4-1.4"></path><path d="M3.4 8.4 8 13"></path><path d="M12.3 3.4 18 9"></path><path d="m15.3 21.3 5.7-5.7"></path></svg>
+);
+
+const BellIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+);
+
+
 export const CALCULATORS: CalculatorInfo[] = [
   {
     id: CalculatorType.EMI,
     name: 'EMI',
+    description: 'Calculate your Equated Monthly Installment (EMI) for home, car, or personal loans. Enter loan amount, interest rate, and tenure to get a detailed breakdown.',
     icon: <BankIcon />,
   },
   {
     id: CalculatorType.LOAN_COMPARISON,
     name: 'Loan Comparison',
+    description: 'Compare two different loan options side-by-side. Analyze EMI, total interest, and total payment to choose the best loan for your needs.',
     icon: <ScaleIcon />,
   },
   {
     id: CalculatorType.RETIREMENT,
     name: 'Retirement',
+    description: 'Plan for your future with our retirement calculator. Estimate the corpus you need to build for a comfortable retirement based on your savings and investments.',
     icon: <PiggyBankIcon />,
   },
   {
     id: CalculatorType.INVESTMENT,
     name: 'Investment',
+    description: 'Project the future value of your investments. Calculate returns for both simple and compound interest to plan your financial goals effectively.',
     icon: <TrendingUpIcon />,
   },
   {
     id: CalculatorType.PROFIT,
     name: 'Profit/Discount',
+    description: 'Easily calculate the profit, loss, and discount for your products. A perfect tool for e-commerce sellers and small business owners.',
     icon: <TagIcon />,
   },
   {
     id: CalculatorType.BMI,
     name: 'BMI',
+    description: "Check your Body Mass Index (BMI) to understand your health status. Get your ideal weight range and see if you are underweight, normal, overweight, or obese.",
     icon: <HeartPulseIcon />,
   },
   {
     id: CalculatorType.AGE,
     name: 'Age',
+    description: 'Calculate your exact age in years, months, and days from your date of birth. Discover fun facts like total days lived and time until your next birthday.',
     icon: <CakeIcon />,
   },
   {
     id: CalculatorType.CURRENCY,
     name: 'Currency',
+    description: 'Convert between major world currencies with our easy-to-use tool. Simple, fast, and accurate currency conversion.',
     icon: <CurrencyIcon />,
+  },
+  {
+    id: CalculatorType.UNIT_CONVERTER,
+    name: 'Unit Converter',
+    description: 'A versatile tool to convert between various units of length and weight. Easily switch between meters, feet, kilograms, pounds, and more.',
+    icon: <RulerIcon />,
+  },
+  {
+    id: CalculatorType.EMI_REMINDER,
+    name: 'EMI Reminder',
+    description: 'Never miss an EMI payment again. Set up personalized reminders for your loan payments and stay on top of your finances.',
+    icon: <BellIcon />,
   }
 ];
 

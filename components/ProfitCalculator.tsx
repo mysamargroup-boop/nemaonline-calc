@@ -6,10 +6,10 @@ import { motion } from 'framer-motion';
 
 const ProfitCalculator: React.FC = () => {
   const defaultState = {
-    costPrice: '800',
-    sellingPrice: '1200',
-    discount: '10',
-    gst: '18',
+    costPrice: '',
+    sellingPrice: '',
+    discount: '',
+    gst: '',
   };
 
   const [costPrice, setCostPrice] = useState<string>(defaultState.costPrice);
@@ -27,8 +27,8 @@ const ProfitCalculator: React.FC = () => {
   const calculateProfit = useCallback(() => {
     const cp = parseFloat(costPrice);
     const sp = parseFloat(sellingPrice);
-    const d = parseFloat(discount);
-    const g = parseFloat(gst);
+    const d = parseFloat(discount) || 0;
+    const g = parseFloat(gst) || 0;
 
     if (cp > 0 && sp > 0) {
       const discountAmount = sp * (d / 100);

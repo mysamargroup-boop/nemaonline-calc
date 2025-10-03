@@ -7,12 +7,12 @@ import { motion } from 'framer-motion';
 
 const RetirementCalculator: React.FC = () => {
     const defaultState = {
-        currentAge: '30',
-        retirementAge: '60',
-        currentSavings: '500000',
-        monthlyContribution: '25000',
-        returnRate: '12',
-        inflationRate: '6',
+        currentAge: '',
+        retirementAge: '',
+        currentSavings: '',
+        monthlyContribution: '',
+        returnRate: '',
+        inflationRate: '',
     };
 
     const [currentAge, setCurrentAge] = useState<string>(defaultState.currentAge);
@@ -36,6 +36,11 @@ const RetirementCalculator: React.FC = () => {
         const contribution = parseFloat(monthlyContribution);
         const rate = parseFloat(returnRate) / 100;
         const inflation = parseFloat(inflationRate) / 100;
+
+        if (isNaN(age) || isNaN(retAge) || isNaN(savings) || isNaN(contribution) || isNaN(rate) || isNaN(inflation)) {
+            setResult(null);
+            return;
+        }
 
         const investmentPeriod = retAge - age;
         if (investmentPeriod <= 0 || rate <= 0) {

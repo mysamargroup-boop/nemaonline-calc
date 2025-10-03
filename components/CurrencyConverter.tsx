@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { CURRENCY_RATES } from '../constants';
 
 const SwapIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3L4 7l4 4"/><path d="M4 7h16"/><path d="M16 21l4-4-4-4"/><path d="M20 17H4"/></svg>
 );
 
 const currencyOptions = Object.entries(CURRENCY_RATES).map(([code, { name }]) => ({
@@ -17,7 +17,7 @@ const currencyOptions = Object.entries(CURRENCY_RATES).map(([code, { name }]) =>
 
 const CurrencyConverter: React.FC = () => {
     const defaultState = {
-        amount: '100',
+        amount: '',
         fromCurrency: 'USD',
         toCurrency: 'INR',
     };

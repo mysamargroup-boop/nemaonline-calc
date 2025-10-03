@@ -17,11 +17,11 @@ const InvestmentCalculator: React.FC = () => {
   type CalculationMode = 'futureValue' | 'findTenure' | 'findPrincipal';
   
   const defaultState = {
-    principal: '100000',
-    rate: '12',
-    tenure: '10',
-    taxRate: '15',
-    targetAmount: '1000000',
+    principal: '',
+    rate: '',
+    tenure: '',
+    taxRate: '',
+    targetAmount: '',
     investmentType: 'compound' as InvestmentType,
     compoundFrequency: '12', // Monthly
     calculationMode: 'futureValue' as CalculationMode,
@@ -65,7 +65,7 @@ const InvestmentCalculator: React.FC = () => {
         maturedAmount = p * Math.pow(1 + r / n, n * t);
       }
       const totalInterest = maturedAmount - p;
-      const taxAmount = totalInterest > 0 ? totalInterest * tax : 0;
+      const taxAmount = totalInterest > 0 ? totalInterest * (tax || 0) : 0;
       const maturedAmountAfterTax = maturedAmount - taxAmount;
 
       setResult({ maturedAmount, totalInterest, taxAmount, maturedAmountAfterTax });

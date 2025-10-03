@@ -10,6 +10,9 @@ import InvestmentCalculator from './components/InvestmentCalculator';
 import CurrencyConverter from './components/CurrencyConverter';
 import LoanComparisonCalculator from './components/LoanComparisonCalculator';
 import RetirementCalculator from './components/RetirementCalculator';
+import UnitConverter from './components/UnitConverter';
+import EMIReminder from './components/EMIReminder';
+import NotFound from './components/NotFound';
 
 const SunIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m4.93 19.07 1.41-1.41"></path><path d="m17.66 6.34 1.41-1.41"></path></svg>
@@ -26,6 +29,16 @@ const App: React.FC = () => {
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
 
   useEffect(() => {
+    // Set initial calculator from URL on page load
+    const params = new URLSearchParams(window.location.search);
+    const tool = params.get('tool');
+    const isValidTool = Object.values(CalculatorType).includes(tool as CalculatorType);
+    if (tool && isValidTool) {
+      setActiveCalculator(tool as CalculatorType);
+    }
+  }, []);
+
+  useEffect(() => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
@@ -40,10 +53,23 @@ const App: React.FC = () => {
     const calculatorName = currentCalculator ? currentCalculator.name : '';
     const nameSuffix = calculatorName.toLowerCase().includes('calculator') ? '' : ' Calculator';
     document.title = `${calculatorName}${nameSuffix} | Nemaonline Calc`;
+
+    // Dynamically update meta description for better SEO
+    const descriptionTag = document.querySelector('meta[name="description"]');
+    if (descriptionTag && currentCalculator?.description) {
+      descriptionTag.setAttribute('content', currentCalculator.description);
+    }
   }, [activeCalculator]);
 
   const toggleTheme = () => {
     setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+  };
+
+  const handleCalculatorChange = (calculatorId: CalculatorType) => {
+    setActiveCalculator(calculatorId);
+    const url = new URL(window.location.href);
+    url.searchParams.set('tool', calculatorId);
+    window.history.pushState({}, '', url);
   };
 
   const renderCalculator = () => {
@@ -64,8 +90,12 @@ const App: React.FC = () => {
         return <InvestmentCalculator key={CalculatorType.INVESTMENT} />;
       case CalculatorType.CURRENCY:
         return <CurrencyConverter key={CalculatorType.CURRENCY} />;
+      case CalculatorType.UNIT_CONVERTER:
+        return <UnitConverter key={CalculatorType.UNIT_CONVERTER} />;
+      case CalculatorType.EMI_REMINDER:
+        return <EMIReminder key={CalculatorType.EMI_REMINDER} />;
       default:
-        return <EMICalculator key={CalculatorType.EMI} />;
+        return <NotFound onNavigateHome={() => handleCalculatorChange(CalculatorType.EMI)} />;
     }
   };
 
@@ -92,7 +122,7 @@ const App: React.FC = () => {
           {CALCULATORS.map((calc) => (
             <button
               key={calc.id}
-              onClick={() => setActiveCalculator(calc.id)}
+              onClick={() => handleCalculatorChange(calc.id)}
               className={`relative flex-shrink-0 px-4 py-2.5 text-sm font-semibold rounded-full transition-colors duration-300 focus:outline-none flex items-center justify-center gap-2
                 ${
                   activeCalculator === calc.id
