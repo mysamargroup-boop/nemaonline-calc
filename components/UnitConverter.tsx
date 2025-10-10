@@ -55,9 +55,10 @@ const UnitConverter: React.FC = () => {
 
     const unitOptions = useMemo(() => {
         const currentFactors = UNITS[conversionType].factors;
-        return Object.entries(currentFactors).map(([code, { name }]) => ({
+        // Fix: Destructuring the 'name' property directly in the map function's arguments was causing a TypeScript inference error. By destructuring the whole unit object and then accessing its 'name' property, we can avoid this issue.
+        return Object.entries(currentFactors).map(([code, unit]) => ({
             value: code,
-            label: `${name} (${code})`,
+            label: `${unit.name} (${code})`,
         }));
     }, [conversionType]);
 
