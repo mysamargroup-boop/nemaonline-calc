@@ -58,7 +58,8 @@ const UnitConverter: React.FC = () => {
         // Fix: Destructuring the 'name' property directly in the map function's arguments was causing a TypeScript inference error. By destructuring the whole unit object and then accessing its 'name' property, we can avoid this issue.
         return Object.entries(currentFactors).map(([code, unit]) => ({
             value: code,
-            label: `${unit.name} (${code})`,
+            // Fix: Cast `unit` to `UnitDefinition` to resolve TypeScript inference error where `unit` is typed as `unknown`.
+            label: `${(unit as UnitDefinition).name} (${code})`,
         }));
     }, [conversionType]);
 
