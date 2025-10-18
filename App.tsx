@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { CalculatorType } from './types';
-import { CALCULATORS } from './constants';
+import { CALCULATORS, TOOL_DEFINITIONS } from './constants';
 import EMICalculator from './components/EMICalculator';
 import ProfitCalculator from './components/ProfitCalculator';
 import BMICalculator from './components/BMICalculator';
@@ -23,18 +24,18 @@ const MoonIcon = () => (
 
 
 const App: React.FC = () => {
-  const [activeCalculator, setActiveCalculator] = useState<CalculatorType>(
-    CalculatorType.EMI
-  );
+  const [currentTool, setCurrentTool] = useState<CalculatorType | 'HOME'>('HOME');
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
 
   useEffect(() => {
-    // Set initial calculator from URL on page load
     const params = new URLSearchParams(window.location.search);
     const tool = params.get('tool');
     const isValidTool = Object.values(CalculatorType).includes(tool as CalculatorType);
+    
     if (tool && isValidTool) {
-      setActiveCalculator(tool as CalculatorType);
+      setCurrentTool(tool as CalculatorType);
+    } else {
+      setCurrentTool('HOME');
     }
   }, []);
 
@@ -47,63 +48,57 @@ const App: React.FC = () => {
       localStorage.setItem('theme', 'light');
     }
   }, [theme]);
-  
-  useEffect(() => {
-    const currentCalculator = CALCULATORS.find(calc => calc.id === activeCalculator);
-    const calculatorName = currentCalculator ? currentCalculator.name : '';
-    const nameSuffix = calculatorName.toLowerCase().includes('calculator') ? '' : ' Calculator';
-    document.title = `${calculatorName}${nameSuffix} | Nemaonline Calc`;
-
-    // Dynamically update meta description for better SEO
-    const descriptionTag = document.querySelector('meta[name="description"]');
-    if (descriptionTag && currentCalculator?.description) {
-      descriptionTag.setAttribute('content', currentCalculator.description);
-    }
-  }, [activeCalculator]);
 
   const toggleTheme = () => {
     setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
   };
 
-  const handleCalculatorChange = (calculatorId: CalculatorType) => {
-    setActiveCalculator(calculatorId);
+  const handleNavigate = (toolId: CalculatorType | 'HOME') => {
     const url = new URL(window.location.href);
-    url.searchParams.set('tool', calculatorId);
+    if (toolId === 'HOME') {
+      setCurrentTool('HOME');
+      url.searchParams.delete('tool');
+    } else {
+      setCurrentTool(toolId);
+      url.searchParams.set('tool', toolId);
+    }
     window.history.pushState({}, '', url);
   };
 
   const renderCalculator = () => {
-    switch (activeCalculator) {
-      case CalculatorType.EMI:
-        return <EMICalculator key={CalculatorType.EMI} />;
-      case CalculatorType.LOAN_COMPARISON:
-        return <LoanComparisonCalculator key={CalculatorType.LOAN_COMPARISON} />;
-      case CalculatorType.RETIREMENT:
-        return <RetirementCalculator key={CalculatorType.RETIREMENT} />;
-      case CalculatorType.PROFIT:
-        return <ProfitCalculator key={CalculatorType.PROFIT} />;
-      case CalculatorType.BMI:
-        return <BMICalculator key={CalculatorType.BMI} />;
-      case CalculatorType.AGE:
-        return <AgeCalculator key={CalculatorType.AGE} />;
-      case CalculatorType.INVESTMENT:
-        return <InvestmentCalculator key={CalculatorType.INVESTMENT} />;
-      case CalculatorType.CURRENCY:
-        return <CurrencyConverter key={CalculatorType.CURRENCY} />;
-      case CalculatorType.UNIT_CONVERTER:
-        return <UnitConverter key={CalculatorType.UNIT_CONVERTER} />;
-      case CalculatorType.EMI_REMINDER:
-        return <EMIReminder key={CalculatorType.EMI_REMINDER} />;
-      default:
-        return <NotFound onNavigateHome={() => handleCalculatorChange(CalculatorType.EMI)} />;
+    const toolToRender = currentTool === 'HOME' ? CalculatorType.EMI : currentTool;
+    switch (toolToRender) {
+      case CalculatorType.EMI: return <EMICalculator key={CalculatorType.EMI} />;
+      case CalculatorType.LOAN_COMPARISON: return <LoanComparisonCalculator key={CalculatorType.LOAN_COMPARISON} />;
+      case CalculatorType.RETIREMENT: return <RetirementCalculator key={CalculatorType.RETIREMENT} />;
+      case CalculatorType.PROFIT: return <ProfitCalculator key={CalculatorType.PROFIT} />;
+      case CalculatorType.BMI: return <BMICalculator key={CalculatorType.BMI} />;
+      case CalculatorType.AGE: return <AgeCalculator key={CalculatorType.AGE} />;
+      case CalculatorType.INVESTMENT: return <InvestmentCalculator key={CalculatorType.INVESTMENT} />;
+      case CalculatorType.CURRENCY: return <CurrencyConverter key={CalculatorType.CURRENCY} />;
+      case CalculatorType.UNIT_CONVERTER: return <UnitConverter key={CalculatorType.UNIT_CONVERTER} />;
+      case CalculatorType.EMI_REMINDER: return <EMIReminder key={CalculatorType.EMI_REMINDER} />;
+      default: return <NotFound onNavigateHome={() => handleNavigate('HOME')} />;
     }
   };
 
+  const activePillId = currentTool === 'HOME' ? CalculatorType.EMI : currentTool;
+  const currentMeta = TOOL_DEFINITIONS[currentTool] || TOOL_DEFINITIONS.HOME;
+  const canonicalUrl = currentTool === 'HOME'
+    ? 'https://calc.nemaonline.in/'
+    : `https://calc.nemaonline.in/?tool=${currentTool}`;
+
   return (
     <div className="flex flex-col min-h-screen font-sans text-slate-800 dark:text-slate-200">
+        <Helmet>
+            <title>{currentMeta.title}</title>
+            <meta name="description" content={currentMeta.description} />
+            <link rel="canonical" href={canonicalUrl} />
+        </Helmet>
+
       <header className="py-6 bg-white/80 dark:bg-black/50 shadow-sm backdrop-blur-sm sticky top-0 z-20 transition-colors duration-300 border-b border-slate-200 dark:border-zinc-800">
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <div className="text-left">
+          <div className="text-left cursor-pointer" onClick={() => handleNavigate('HOME')}>
             <h1 className="text-3xl md:text-4xl font-extrabold text-blue-900 dark:text-white tracking-tight">
               Nemaonline Calc
             </h1>
@@ -122,15 +117,15 @@ const App: React.FC = () => {
           {CALCULATORS.map((calc) => (
             <button
               key={calc.id}
-              onClick={() => handleCalculatorChange(calc.id)}
+              onClick={() => handleNavigate(calc.id)}
               className={`relative flex-shrink-0 px-4 py-2.5 text-sm font-semibold rounded-full transition-colors duration-300 focus:outline-none flex items-center justify-center gap-2
                 ${
-                  activeCalculator === calc.id
+                  activePillId === calc.id
                     ? 'text-blue-800 dark:text-zinc-900'
                     : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-100'
                 }`}
             >
-              {activeCalculator === calc.id && (
+              {activePillId === calc.id && (
                 <motion.div
                   layoutId="active-pill"
                   className="absolute inset-0 bg-white dark:bg-slate-100 rounded-full shadow-md z-0"

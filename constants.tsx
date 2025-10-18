@@ -47,7 +47,7 @@ export const CALCULATORS: CalculatorInfo[] = [
   {
     id: CalculatorType.EMI,
     name: 'EMI',
-    description: 'Calculate your Equated Monthly Installment (EMI) for home, car, or personal loans. Enter loan amount, interest rate, and tenure to get a detailed breakdown.',
+    description: 'Calculate your Equated Monthly Installment for home, car, or personal loans. Enter loan amount, interest rate, and tenure to get a detailed breakdown.',
     icon: <BankIcon />,
   },
   {
@@ -77,13 +77,13 @@ export const CALCULATORS: CalculatorInfo[] = [
   {
     id: CalculatorType.BMI,
     name: 'BMI',
-    description: "Check your Body Mass Index (BMI) to understand your health status. Get your ideal weight range and see if you are underweight, normal, overweight, or obese.",
+    description: "Check your Body Mass Index (BMI) to understand your health status. See if you are underweight, normal, overweight, or obese.",
     icon: <HeartPulseIcon />,
   },
   {
     id: CalculatorType.AGE,
     name: 'Age',
-    description: 'Calculate your exact age in years, months, and days from your date of birth. Discover fun facts like total days lived and time until your next birthday.',
+    description: 'Calculate your exact age in years, months, and days from your date of birth. Discover total days lived and time until your next birthday.',
     icon: <CakeIcon />,
   },
   {
@@ -105,6 +105,55 @@ export const CALCULATORS: CalculatorInfo[] = [
     icon: <BellIcon />,
   }
 ];
+
+
+export const TOOL_DEFINITIONS: { [key in CalculatorType | 'HOME']: { title: string, description: string } } = {
+    HOME: {
+        title: 'NEMA Financial Calculators | All-in-One Toolkit (EMI, Investment, etc.)',
+        description: 'Free financial calculators for EMI, investments, retirement, loans & more. Make smarter financial decisions with our easy-to-use, all-in-one toolkit.'
+    },
+    [CalculatorType.EMI]: {
+        title: 'EMI Calculator - Calculate Loan EMIs Instantly',
+        description: 'Accurately calculate your Equated Monthly Installment (EMI) for home, car, or personal loans. Plan your finances with our easy-to-use EMI calculator.'
+    },
+    [CalculatorType.LOAN_COMPARISON]: {
+        title: 'Loan Comparison Calculator - Compare Two Loans Side-by-Side',
+        description: 'Compare interest rates, EMIs, and total payouts for two different loans. Make an informed decision and choose the loan that best suits your needs.'
+    },
+    [CalculatorType.RETIREMENT]: {
+        title: 'Retirement Planning Calculator - Secure Your Future',
+        description: 'Estimate the retirement corpus you need. Plan your investments to achieve financial independence and a stress-free retired life.'
+    },
+    [CalculatorType.INVESTMENT]: {
+        title: 'Investment Calculator - Project Your Investment Growth',
+        description: 'Calculate the future value of your investments with options for simple & compound interest. A great tool for planning your SIP and lump-sum investments.'
+    },
+    [CalculatorType.PROFIT]: {
+        title: 'Profit and Discount Calculator - For Your Business Needs',
+        description: 'Quickly calculate profit margins, discounts, and selling prices. An essential tool for retailers, vendors, and business owners.'
+    },
+    [CalculatorType.BMI]: {
+        title: 'BMI Calculator - Check Your Body Mass Index',
+        description: 'Monitor your health with our BMI calculator. Find out if you are in a healthy weight range and get insights into your overall well-being.'
+    },
+    [CalculatorType.AGE]: {
+        title: 'Age Calculator - Find Your Exact Age',
+        description: 'Calculate your age in years, months, days, and even seconds. A fun and easy way to find out how old you are.'
+    },
+    [CalculatorType.CURRENCY]: {
+        title: 'Currency Converter - Live Exchange Rates',
+        description: 'Get real-time exchange rates and convert between all major currencies. A simple and reliable tool for travelers and international business.'
+    },
+    [CalculatorType.UNIT_CONVERTER]: {
+        title: 'Unit Converter - Length, Weight, and More',
+        description: 'An all-in-one unit converter for length, weight, temperature, and more. A handy tool for students, engineers, and everyday use.'
+    },
+    [CalculatorType.EMI_REMINDER]: {
+        title: 'EMI Reminder - Never Miss a Payment',
+        description: 'Set up timely reminders for your upcoming loan EMI payments. Manage your finances better and avoid late fees.'
+    }
+};
+
 
 // Mock currency rates with USD as the base
 export const CURRENCY_RATES: { [key: string]: { name: string, rate: number } } = {
