@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Point crawlers to the sitemap file
-Sitemap: https://calc.nemaonline.in/sitemap_v2.xml
+Sitemap: https://calc.nemaonline.in/sitemap.xml
