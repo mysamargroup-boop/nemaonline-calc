@@ -1,19 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { CalculatorType } from './types';
 import { CALCULATORS, TOOL_DEFINITIONS } from './constants';
-import EMICalculator from './components/EMICalculator';
-import ProfitCalculator from './components/ProfitCalculator';
-import BMICalculator from './components/BMICalculator';
-import AgeCalculator from './components/AgeCalculator';
-import InvestmentCalculator from './components/InvestmentCalculator';
-import CurrencyConverter from './components/CurrencyConverter';
-import LoanComparisonCalculator from './components/LoanComparisonCalculator';
-import RetirementCalculator from './components/RetirementCalculator';
-import UnitConverter from './components/UnitConverter';
-import EMIReminder from './components/EMIReminder';
-import NotFound from './components/NotFound';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const SunIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m4.93 19.07 1.41-1.41"></path><path d="m17.66 6.34 1.41-1.41"></path></svg>
@@ -24,20 +15,23 @@ const MoonIcon = () => (
 
 
 const App: React.FC = () => {
-  const [currentTool, setCurrentTool] = useState<CalculatorType | 'HOME'>('HOME');
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const getToolIdFromPath = (path: string): CalculatorType | 'HOME' => {
+    const parts = path.split('/').filter(p => p);
+    if (parts.length === 0) return 'HOME';
+    
+    const tool = CALCULATORS.find(c => c.id.toLowerCase().replace(/_/g, '-') === parts[0]);
+    return tool ? tool.id : 'HOME';
+  };
+  
+  const [currentTool, setCurrentTool] = useState<CalculatorType | 'HOME'>(()=>getToolIdFromPath(location.pathname));
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const tool = params.get('tool');
-    const isValidTool = Object.values(CalculatorType).includes(tool as CalculatorType);
-    
-    if (tool && isValidTool) {
-      setCurrentTool(tool as CalculatorType);
-    } else {
-      setCurrentTool('HOME');
-    }
-  }, []);
+    setCurrentTool(getToolIdFromPath(location.pathname));
+  }, [location.pathname]);
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -54,31 +48,10 @@ const App: React.FC = () => {
   };
 
   const handleNavigate = (toolId: CalculatorType | 'HOME') => {
-    const url = new URL(window.location.href);
     if (toolId === 'HOME') {
-      setCurrentTool('HOME');
-      url.searchParams.delete('tool');
+      navigate('/');
     } else {
-      setCurrentTool(toolId);
-      url.searchParams.set('tool', toolId);
-    }
-    window.history.pushState({}, '', url);
-  };
-
-  const renderCalculator = () => {
-    const toolToRender = currentTool === 'HOME' ? CalculatorType.EMI : currentTool;
-    switch (toolToRender) {
-      case CalculatorType.EMI: return <EMICalculator key={CalculatorType.EMI} />;
-      case CalculatorType.LOAN_COMPARISON: return <LoanComparisonCalculator key={CalculatorType.LOAN_COMPARISON} />;
-      case CalculatorType.RETIREMENT: return <RetirementCalculator key={CalculatorType.RETIREMENT} />;
-      case CalculatorType.PROFIT: return <ProfitCalculator key={CalculatorType.PROFIT} />;
-      case CalculatorType.BMI: return <BMICalculator key={CalculatorType.BMI} />;
-      case CalculatorType.AGE: return <AgeCalculator key={CalculatorType.AGE} />;
-      case CalculatorType.INVESTMENT: return <InvestmentCalculator key={CalculatorType.INVESTMENT} />;
-      case CalculatorType.CURRENCY: return <CurrencyConverter key={CalculatorType.CURRENCY} />;
-      case CalculatorType.UNIT_CONVERTER: return <UnitConverter key={CalculatorType.UNIT_CONVERTER} />;
-      case CalculatorType.EMI_REMINDER: return <EMIReminder key={CalculatorType.EMI_REMINDER} />;
-      default: return <NotFound onNavigateHome={() => handleNavigate('HOME')} />;
+      navigate(`/${toolId.toLowerCase().replace(/_/g, '-')}`);
     }
   };
 
@@ -86,7 +59,7 @@ const App: React.FC = () => {
   const currentMeta = TOOL_DEFINITIONS[currentTool] || TOOL_DEFINITIONS.HOME;
   const canonicalUrl = currentTool === 'HOME'
     ? 'https://calc.nemaonline.in/'
-    : `https://calc.nemaonline.in/?tool=${currentTool}`;
+    : `https://calc.nemaonline.in/${currentTool.toLowerCase().replace(/_/g, '-')}`;
 
   return (
     <div className="flex flex-col min-h-screen font-sans text-slate-800 dark:text-slate-200">
@@ -141,7 +114,7 @@ const App: React.FC = () => {
         </nav>
         
         <AnimatePresence mode="wait">
-          {renderCalculator()}
+          <Outlet />
         </AnimatePresence>
 
       </main>

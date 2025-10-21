@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PieChart from './PieChart';
 import ExplainerModal from './ExplainerModal';
 import BucketAnimation from './animations/BucketAnimation';
-
+import { Helmet } from 'react-helmet-async';
 
 interface Result {
     emi: number;
@@ -130,6 +130,11 @@ const EMICalculator: React.FC = () => {
 
   return (
     <>
+      <Helmet>
+        <title>EMI Calculator for Loan of ₹{principal} for {tenure} {tenureUnit} at {rate}% interest</title>
+        <meta name="description" content={`Calculate your EMI for a loan of ₹${principal} for a tenure of ${tenure} ${tenureUnit} at an interest rate of ${rate}%.`} />
+        <meta name="keywords" content={`EMI calculator, loan calculator, EMI, loan, interest, principal, tenure, ₹${principal}, ${rate}%, ${tenure} ${tenureUnit}, hindi EMI calculator`} />
+      </Helmet>
       <Card>
         <div className="space-y-8">
           {/* Loan Amount */}
