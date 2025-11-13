@@ -3,6 +3,7 @@ import Card from './Card';
 import Input from './Input';
 import Button from './Button';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 interface LoanDetails {
   principal: string;
@@ -86,37 +87,44 @@ const LoanComparisonCalculator: React.FC = () => {
   );
 
   return (
-    <Card title="Loan Comparison Calculator" headerActions={<Button variant="secondary" onClick={resetCalculator} className="py-1 px-3 text-sm">Reset</Button>}>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <LoanInputGroup title="Loan 1" loan={loan1} onChange={handleLoan1Change} />
-        <LoanInputGroup title="Loan 2" loan={loan2} onChange={handleLoan2Change} />
-      </div>
-      
-      {result1 && result2 && (
-        <motion.div 
-          role="region"
-          aria-live="polite"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-8 pt-6 border-t border-slate-200 dark:border-zinc-800"
-        >
-          <h3 className="text-xl font-bold text-center mb-6 text-slate-800 dark:text-slate-200">Comparison Result</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center md:text-left">
-              <LoanResultCard result={result1} />
-              <LoanResultCard result={result2} />
-          </div>
-          <div className={`mt-8 text-center p-6 rounded-lg ${betterLoan === 'Loan 1' ? 'bg-green-50 dark:bg-green-900/50' : 'bg-green-50 dark:bg-green-900/50'}`}>
-            <p className="text-lg font-semibold text-green-800 dark:text-green-300">
-              {betterLoan} is the better option!
-            </p>
-            <p className="text-md text-green-600 dark:text-green-400">
-              You will save a total of <span className="font-bold">{formatCurrency(savings)}</span> in interest payments.
-            </p>
-          </div>
-        </motion.div>
-      )}
-    </Card>
+    <>
+      <Helmet>
+        <title>Loan Comparison Calculator - Compare Two Loans Side-by-Side</title>
+        <meta name="description" content="Compare two loans with different interest rates and tenures. Our loan comparison calculator helps you choose the better loan by showing you the difference in EMI and total interest paid." />
+        <meta name="keywords" content="loan comparison calculator, compare loans, loan calculator, EMI comparison, interest rate comparison, loan tenure, choose better loan" />
+      </Helmet>
+      <Card title="Loan Comparison Calculator" headerActions={<Button variant="secondary" onClick={resetCalculator} className="py-1 px-3 text-sm">Reset</Button>}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <LoanInputGroup title="Loan 1" loan={loan1} onChange={handleLoan1Change} />
+          <LoanInputGroup title="Loan 2" loan={loan2} onChange={handleLoan2Change} />
+        </div>
+        
+        {result1 && result2 && (
+          <motion.div 
+            role="region"
+            aria-live="polite"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="mt-8 pt-6 border-t border-slate-200 dark:border-zinc-800"
+          >
+            <h3 className="text-xl font-bold text-center mb-6 text-slate-800 dark:text-slate-200">Comparison Result</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center md:text-left">
+                <LoanResultCard result={result1} />
+                <LoanResultCard result={result2} />
+            </div>
+            <div className={`mt-8 text-center p-6 rounded-lg ${betterLoan === 'Loan 1' ? 'bg-green-50 dark:bg-green-900/50' : 'bg-green-50 dark:bg-green-900/50'}`}>
+              <p className="text-lg font-semibold text-green-800 dark:text-green-300">
+                {betterLoan} is the better option!
+              </p>
+              <p className="text-md text-green-600 dark:text-green-400">
+                You will save a total of <span className="font-bold">{formatCurrency(savings)}</span> in interest payments.
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </Card>
+    </>
   );
 };
 

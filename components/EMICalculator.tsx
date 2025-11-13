@@ -131,9 +131,9 @@ const EMICalculator: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>EMI Calculator for Loan of ₹{principal} for {tenure} {tenureUnit} at {rate}% interest</title>
-        <meta name="description" content={`Calculate your EMI for a loan of ₹${principal} for a tenure of ${tenure} ${tenureUnit} at an interest rate of ${rate}%.`} />
-        <meta name="keywords" content={`EMI calculator, loan calculator, EMI, loan, interest, principal, tenure, ₹${principal}, ${rate}%, ${tenure} ${tenureUnit}, hindi EMI calculator`} />
+        <title>Free EMI Calculator - Calculate Loan EMI for Home, Car, Personal Loan</title>
+        <meta name="description" content="Free online EMI calculator to calculate your monthly loan EMI for a home loan, car loan, or personal loan in India. Instantly calculate your EMI, total interest, and total repayment amount." />
+        <meta name="keywords" content="EMI calculator, free EMI calculator, loan calculator, home loan EMI calculator, car loan EMI calculator, personal loan EMI calculator, EMI calculation, loan EMI, EMI, interest rate, loan tenure, India" />
       </Helmet>
       <Card>
         <div className="space-y-8">
