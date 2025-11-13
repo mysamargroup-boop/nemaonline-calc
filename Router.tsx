@@ -1,5 +1,5 @@
 
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "./App";
 import EMICalculator from "./components/EMICalculator";
 import LoanComparisonCalculator from "./components/LoanComparisonCalculator";
@@ -18,6 +18,10 @@ export const appRouter = createBrowserRouter([
         path: "/",
         element: <App />,
         children: [
+            {
+                index: true,
+                element: <Navigate to="/emi-calculator" replace />,
+            },
             {
                 path: "emi-calculator",
                 element: <EMICalculator />,

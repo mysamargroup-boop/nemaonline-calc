@@ -173,3 +173,16 @@ export const CURRENCY_RATES: { [key: string]: { name: string, rate: number } } =
   "SGD": { name: "Singapore Dollar", rate: 1.35 },
   "NZD": { name: "New Zealand Dollar", rate: 1.63 },
 };
+
+export const PATH_DEFINITIONS: { [key in CalculatorType]: string } = {
+    [CalculatorType.EMI]: "/emi-calculator",
+    [CalculatorType.LOAN_COMPARISON]: "/loan-comparison-calculator",
+    [CalculatorType.RETIREMENT]: "/retirement-calculator",
+    [CalculatorType.INVESTMENT]: "/investment-calculator",
+    [CalculatorType.PROFIT]: "/profit-calculator",
+    [CalculatorType.BMI]: "/bmi-calculator",
+    [CalculatorType.AGE]: "/age-calculator",
+    [CalculatorType.CURRENCY]: "/currency-converter",
+    [CalculatorType.UNIT_CONVERTER]: "/unit-converter",
+    [CalculatorType.EMI_REMINDER]: "/emi-reminder",
+};

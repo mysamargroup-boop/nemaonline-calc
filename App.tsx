@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { CalculatorType } from './types';
-import { CALCULATORS, TOOL_DEFINITIONS } from './constants';
+import { CALCULATORS, TOOL_DEFINITIONS, PATH_DEFINITIONS } from './constants';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const SunIcon = () => (
@@ -51,7 +51,13 @@ const App: React.FC = () => {
     if (toolId === 'HOME') {
       navigate('/');
     } else {
-      navigate(`/${toolId.toLowerCase().replace(/_/g, '-')}`);
+      const path = PATH_DEFINITIONS[toolId];
+      if (path) {
+        navigate(path);
+      } else {
+        console.error(`No path found for tool: ${toolId}`);
+        navigate('/'); // Fallback to home
+      }
     }
   };
 
